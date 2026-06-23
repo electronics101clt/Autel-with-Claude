@@ -1,18 +1,63 @@
-# Termux ADB TTY Security - Understanding run-as PTY Requirements
+# Autel with Claude - Vehicle Diagnostics Analysis Using AI
 
 ## Overview
 
-This repository documents the security reasons behind why Android's `run-as` command requires a proper PTY (pseudo-terminal) to function, and why it fails in detached terminal sessions.
+**Formerly**: `termux-adb-tty-security`
+**Now**: Complete guide for analyzing Autel MaxiAP200 diagnostic data using Claude Code running natively on Android via Termux.
+
+This repository documents:
+1. **Installing Claude Code in Termux** - Native Android installation without root
+2. **Accessing Autel Diagnostic Data** - Direct filesystem access to OBD-II recordings
+3. **ADB/Termux Security** - Understanding `run-as` PTY requirements and terminal injection vulnerabilities
+
+## Repository Contents
+
+- **[CLAUDE_CODE_TERMUX_INSTALL.md](CLAUDE_CODE_TERMUX_INSTALL.md)** - Complete Claude Code installation guide for Termux
+- **[README.md](README.md)** (this file) - Quick start, Autel data locations, and ADB security documentation
+- **[autel-conversation.md](autel-conversation.md)** - Detailed conversation log documenting the discovery process
+
+---
+
+## 📚 Table of Contents
+
+1. [Quick Start - Using Claude Code with Autel Data](#-quick-start---using-claude-code-with-autel-data)
+2. [Autel MaxiAP200 Data Storage Locations](#autel-maxiap200-data-storage-locations)
+3. [ADB/Termux Security Background](#the-problem)
+4. [TIOCSTI Terminal Injection Vulnerability](#why-this-happens-tiocsti-terminal-injection-vulnerability)
+5. [Methods to Access Termux via ADB](#methods-to-access-termux-via-adb)
+
+---
+
+## ADB/Termux Security Background
+
+This section documents:
+1. Why `run-as com.termux` fails with "package not debuggable" when using standard Termux APKs
+2. The security reasons behind `run-as` requiring proper PTY allocation in terminal sessions
+3. Why TIOCSTI terminal injection attacks require isolation even after fixing debuggability
 
 ## The Problem
 
-When attempting to access Termux via ADB without root:
+### Primary Issue: Termux Not Debuggable
+
+**Using standard Termux APKs (Play Store, F-Droid):**
+```bash
+adb shell 'run-as com.termux /data/data/com.termux/files/usr/bin/bash'
+# Result: "run-as: package not debuggable: com.termux"
+```
+
+**Root cause**: Play Store and F-Droid Termux APKs are NOT marked as debuggable in their AndroidManifest.xml.
+
+**Solution**: Install debuggable Termux build from GitHub releases.
+
+### Secondary Issue: PTY Requirement (When Using Debuggable APK)
+
+Even with a debuggable Termux APK:
 
 ```bash
 # This FAILS in detached tmux:
 tmux new-session -d -s termux 'adb shell'
 tmux send-keys -t termux 'run-as com.termux /data/data/com.termux/files/usr/bin/bash' C-m
-# Result: "run-as: package not debuggable: com.termux"
+# Result: Security check fails due to no proper PTY
 
 # This WORKS in visible terminal:
 gnome-terminal -- tmux new-session -s termux 'adb shell'
@@ -206,6 +251,27 @@ If you've discovered additional methods or security considerations related to An
 ## License
 
 MIT License - See LICENSE file for details
+
+---
+
+## 🚀 Quick Start - Using Claude Code with Autel Data
+
+For complete installation instructions, see **[CLAUDE_CODE_TERMUX_INSTALL.md](CLAUDE_CODE_TERMUX_INSTALL.md)**
+
+**TL;DR**:
+```bash
+# Install Claude Code natively in Termux
+curl -fsSL https://raw.githubusercontent.com/ferrumclaudepilgrim/claude-code-android/main/install.sh | bash
+
+# Grant storage access
+termux-setup-storage
+
+# Navigate to Autel diagnostic data
+cd ~/storage/shared/Android/data/com.autel.maxiap200.autelap/files/MaxiApScan/DataLogging/data/
+
+# Launch Claude Code
+claude
+```
 
 ---
 
