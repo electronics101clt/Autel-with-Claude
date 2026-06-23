@@ -209,5 +209,55 @@ MIT License - See LICENSE file for details
 
 ---
 
-**Last Updated**: 2026-06-22
-**Discovered During**: Attempts to automate Termux access via ADB without root
+## Autel MaxiAP200 Data Storage Locations
+
+**Package**: `com.autel.maxiap200.autelap`
+
+### Recording/Data Logging Files
+
+**Location**: `/sdcard/Android/data/com.autel.maxiap200.autelap/files/MaxiApScan/DataLogging/data/`
+
+**Structure**:
+- Each recording session creates a directory: `DATA_YYYYMMDDHHMMSS/`
+- Contains binary `.txt` files with OBD-II data stream
+- Also creates `.zip` archives of the sessions
+
+**Example**:
+```
+/sdcard/Android/data/com.autel.maxiap200.autelap/files/MaxiApScan/DataLogging/data/
+├── DATA_202605311841021/
+│   └── 20260531183943_842133572.txt  (binary OBD-II data)
+├── DATA_202605311841021.zip
+├── DATA_202605311842293/
+│   └── [timestamp].txt
+└── DATA_202605311842293.zip
+```
+
+### PDF Reports
+
+**Location**: `/sdcard/Android/data/com.autel.maxiap200.autelap/files/MaxiApScan/Data/PDF/`
+
+### Accessing from Termux
+
+```bash
+# In Termux, after granting storage permission:
+termux-setup-storage
+
+# Navigate to Autel data:
+cd ~/storage/shared/Android/data/com.autel.maxiap200.autelap/files/MaxiApScan/DataLogging/data/
+
+# List recording sessions:
+ls -lh
+
+# Access latest recording:
+cd $(ls -t | head -1)
+
+# The data files are in binary format - will need parsing
+```
+
+**Note**: The recording files contain binary-encoded OBD-II diagnostic data. A parser will be needed to decode the vehicle data streams for use with Claude Code in Termux.
+
+---
+
+**Last Updated**: 2026-06-23
+**Discovered During**: Attempts to automate Termux access via ADB without root and locate Autel AP200 diagnostic data
