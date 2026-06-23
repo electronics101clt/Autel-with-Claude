@@ -21,23 +21,20 @@ This repository documents:
 ## 📚 Table of Contents
 
 1. [Quick Start - Using Claude Code with Autel Data](#-quick-start---using-claude-code-with-autel-data)
-2. [Autel MaxiAP200 Data Storage Locations](#autel-maxiap200-data-storage-locations)
-3. [ADB/Termux Security Background](#the-problem)
-4. [TIOCSTI Terminal Injection Vulnerability](#why-this-happens-tiocsti-terminal-injection-vulnerability)
-5. [Methods to Access Termux via ADB](#methods-to-access-termux-via-adb)
+2. [Download Debuggable Termux APK](#download-debuggable-termux-apk)
+3. [Autel MaxiAP200 Data Storage Locations](#autel-maxiap200-data-storage-locations)
+4. [Methods to Access Termux via ADB](#methods-to-access-termux-via-adb)
+5. [Appendix: Advanced Security Topics](#appendix-advanced-security-topics)
 
 ---
 
-## ADB/Termux Security Background
+## ADB/Termux Access - The Real Problem
 
-This section documents:
-1. Why `run-as com.termux` fails with "package not debuggable" when using standard Termux APKs
-2. The security reasons behind `run-as` requiring proper PTY allocation in terminal sessions
-3. Why TIOCSTI terminal injection attacks require isolation even after fixing debuggability
+`run-as com.termux` fails with **"package not debuggable"** because Play Store and F-Droid Termux builds don't have `android:debuggable="true"` in their manifest.
+
+**Fix**: Download the debuggable build from GitHub (links below).
 
 ## The Problem
-
-### Primary Issue: Termux Not Debuggable
 
 **Using standard Termux APKs (Play Store, F-Droid):**
 ```bash
@@ -49,27 +46,17 @@ adb shell 'run-as com.termux /data/data/com.termux/files/usr/bin/bash'
 
 **Solution**: Install debuggable Termux build from GitHub releases.
 
-### Secondary Issue: PTY Requirement (When Using Debuggable APK)
+That's it. Once you have the debuggable APK, `run-as com.termux` works.
 
-Even with a debuggable Termux APK:
+---
 
-```bash
-# This FAILS in detached tmux:
-tmux new-session -d -s termux 'adb shell'
-tmux send-keys -t termux 'run-as com.termux /data/data/com.termux/files/usr/bin/bash' C-m
-# Result: Security check fails due to no proper PTY
+## Appendix: Advanced Security Topics
 
-# This WORKS in visible terminal:
-gnome-terminal -- tmux new-session -s termux 'adb shell'
-tmux send-keys -t termux 'run-as com.termux /data/data/com.termux/files/usr/bin/bash' C-m
-# Result: Successfully enters Termux bash
-```
+### PTY Requirements and TIOCSTI Terminal Injection
 
-## Why This Happens: TIOCSTI Terminal Injection Vulnerability
+*Note: This is NOT why `run-as com.termux` was failing. It failed because Termux wasn't debuggable. The information below is background on why `run-as` has additional PTY security checks in certain contexts.*
 
-### The TIOCSTI Attack Vector
-
-The TTY requirement in `run-as` is a **security measure to prevent terminal injection attacks**.
+The TTY requirement in some `run-as` implementations is a **security measure to prevent terminal injection attacks**.
 
 When privilege-switching utilities (like `run-as`, `su`, or `sudo`) change the UID of a process, the terminal remains accessible to the new (possibly less privileged) user. An attacker can exploit this through the `TIOCSTI ioctl()` system call.
 
