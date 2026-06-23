@@ -13,6 +13,7 @@ This repository documents:
 ## Repository Contents
 
 - **[CLAUDE_CODE_TERMUX_INSTALL.md](CLAUDE_CODE_TERMUX_INSTALL.md)** - Complete Claude Code installation guide for Termux
+- **[APK_PATCHING.md](APK_PATCHING.md)** - Guide to patching Autel APK as debuggable for direct Termux data access
 - **[LOOP1_HOP.md](LOOP1_HOP.md)** - Loop1 "Hand Over Point" workflow for exporting Autel PDFs
 - **[WORKFLOW.md](WORKFLOW.md)** - Daily workflow for analyzing Autel diagnostics with Claude Code
 - **[README.md](README.md)** (this file) - Quick start, Autel data locations, and ADB security documentation
@@ -25,9 +26,10 @@ This repository documents:
 1. [Quick Start - Using Claude Code with Autel Data](#-quick-start---using-claude-code-with-autel-data)
 2. [Download Debuggable Termux APK](#download-debuggable-termux-apk)
 3. [Autel MaxiAP200 Data Storage Locations](#autel-maxiap200-data-storage-locations)
-4. [Loop1 Hand Over Point (HOP)](#loop1-hand-over-point-hop)
-5. [Methods to Access Termux via ADB](#methods-to-access-termux-via-adb)
-6. [Appendix: Advanced Security Topics](#appendix-advanced-security-topics)
+4. [Patching Autel APK for Direct Access](#patching-autel-apk-for-direct-access)
+5. [Loop1 Hand Over Point (HOP)](#loop1-hand-over-point-hop)
+6. [Methods to Access Termux via ADB](#methods-to-access-termux-via-adb)
+7. [Appendix: Advanced Security Topics](#appendix-advanced-security-topics)
 
 ---
 
@@ -312,6 +314,29 @@ cd $(ls -t | head -1)
 ```
 
 **Note**: The recording files contain binary-encoded OBD-II diagnostic data. A parser will be needed to decode the vehicle data streams for use with Claude Code in Termux.
+
+---
+
+## Patching Autel APK for Direct Access
+
+Android's scoped storage prevents Termux from directly accessing `/sdcard/Android/data/` directories of other apps. By patching the Autel APK to be debuggable, you can use `run-as` for direct filesystem access.
+
+### Quick Overview
+
+**Patch the APK to add**: `android:debuggable="true"` to AndroidManifest.xml
+
+**Result**: Direct access to Autel data via:
+```bash
+run-as com.autel.maxiap200.autelap sh -c 'cat /sdcard/Android/data/com.autel.maxiap200.autelap/files/MaxiApScan/DataLogging/data/DATA_*/​*.txt' > ~/autel_data.txt
+```
+
+**Complete Guide**: See **[APK_PATCHING.md](APK_PATCHING.md)** for:
+- Step-by-step patching workflow
+- Using apktool to decompile/recompile
+- Signing patched APKs
+- Alternative approaches (FileProvider export, shared UID)
+- Security considerations
+- Troubleshooting
 
 ---
 
