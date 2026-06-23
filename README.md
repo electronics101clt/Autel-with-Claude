@@ -10,10 +10,38 @@ This repository documents:
 2. **Accessing Autel Diagnostic Data** - Direct filesystem access to OBD-II recordings
 3. **ADB/Termux Security** - Understanding `run-as` PTY requirements and terminal injection vulnerabilities
 
+## ✅ Current Working Solution
+
+**After extensive testing and research (June 2026):**
+
+**Termux Direct Access**: ❌ **NOT POSSIBLE**
+- Autel MaxiAP200 uses Secneo APK protection
+- Patching to add `android:debuggable="true"` causes immediate crash (SIGSEGV at 0xb4c)
+- No patched/cracked versions available online
+- Native anti-tamper protection cannot be bypassed with apktool
+
+**ADB Pull Method**: ✅ **CONFIRMED WORKING** (Recommended)
+- Tested on Android 15 with scoped storage
+- Full access to Autel data directories
+- No root required
+- See [Termux-vs-ADB.md](Termux-vs-ADB.md) for complete details
+
+```bash
+# Access Autel data via ADB (works perfectly)
+adb pull /sdcard/Android/data/com.autel.maxiap200.autelap/files/MaxiApScan/ ~/autel-data/
+```
+
+**Loop1 HOP Method**: ✅ **WORKS** (Alternative for PDFs)
+- Export PDFs to `/sdcard/Download/` using fake contact
+- See [LOOP1_HOP.md](LOOP1_HOP.md) for workflow
+
+---
+
 ## Repository Contents
 
 - **[CLAUDE_CODE_TERMUX_INSTALL.md](CLAUDE_CODE_TERMUX_INSTALL.md)** - Complete Claude Code installation guide for Termux
-- **[APK_PATCHING.md](APK_PATCHING.md)** - Guide to patching Autel APK as debuggable for direct Termux data access
+- **[Termux-vs-ADB.md](Termux-vs-ADB.md)** - Why Termux can't access Autel data & confirmed ADB solution
+- **[APK_PATCHING.md](APK_PATCHING.md)** - Guide to patching APKs (fails on Autel due to Secneo protection)
 - **[LOOP1_HOP.md](LOOP1_HOP.md)** - Loop1 "Hand Over Point" workflow for exporting Autel PDFs
 - **[WORKFLOW.md](WORKFLOW.md)** - Daily workflow for analyzing Autel diagnostics with Claude Code
 - **[README.md](README.md)** (this file) - Quick start, Autel data locations, and ADB security documentation

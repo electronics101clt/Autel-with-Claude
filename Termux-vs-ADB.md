@@ -869,5 +869,42 @@
   2. ADB pull to laptop - WORKS ✅ (tested and confirmed)
   3. Root device - (not needed, ADB works fine)
 
-✻ Worked for 1m 54s
+---
+
+## Search for Patched APKs Online (June 2026)
+
+**Searched multiple sources for debuggable/patched Autel MaxiAP200 APK:**
+
+### Sources Checked:
+- APKPure, APKCombo, Aptoide - Only official builds (v1.64)
+- HappyMod, PlayMods - Modified versions have "Debug Info **REMOVED**" (opposite of needed)
+- XDA Forums - No Autel-specific patching threads found
+- GitHub - No Autel MaxiAP200 patching repos found
+- MHH Auto Forum - Found: "Autel killed by root attempt" (warranty void if tampered)
+
+### Conclusion: **NO PATCHED APKS AVAILABLE** ❌
+
+**Why no one has cracked it:**
+1. **Secneo protection is effective** - SIGSEGV crash at 0xb4c proves it works
+2. **Autel actively enforces** - Voids warranty if tampering detected
+3. **Small user base** - Professional tool, not mass-market app
+4. **Hardware-locked** - Requires physical AP200 device ($150+), so cracking APK alone is useless
+
+### Final Decision
+
+**ADB Pull is the working solution, not a "fallback"** ✅
+
+It's the **primary method** because:
+- Tested and confirmed working on Android 15
+- No root required
+- Full access to all Autel data
+- Reliable and safe
+- Doesn't violate warranty
+
+**Termux direct access is impossible** - Not due to lack of trying, but because Secneo protection is unbreakable with current public tools.
+
+---
+
+**Last Updated**: 2026-06-23
+**Status**: ADB Pull confirmed as recommended solution
 
