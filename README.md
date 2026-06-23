@@ -37,15 +37,48 @@ adb pull /sdcard/Android/data/com.autel.maxiap200.autelap/files/MaxiApScan/ ~/au
 
 ---
 
+## 🔄 Analysis Workflows
+
+**Two approaches to analyze Autel diagnostic data with Claude Code:**
+
+### Workflow A: Native Claude in Termux (On Android)
+```bash
+# On Android device
+cd ~/storage/shared/Download  # Access exported PDFs
+claude                         # Launch Claude Code
+```
+- ✅ Portable (phone only)
+- ✅ Works offline
+- ❌ Cannot access Autel data directly (must use Loop1 HOP or manual copy)
+- Best for: Quick checks in vehicle
+
+### Workflow B: Laptop with ADB (Recommended)
+```bash
+# On laptop
+adb pull /sdcard/Android/data/com.autel.maxiap200.autelap/files/ ./autel-data/
+cd autel-data/
+claude
+```
+- ✅ Full access to all Autel data
+- ✅ Better performance (laptop resources)
+- ✅ Larger screen, keyboard
+- ❌ Requires laptop + USB cable
+- Best for: Detailed analysis, automation
+
+**See [WORKFLOW_COMPARISON.md](WORKFLOW_COMPARISON.md) for complete step-by-step guides for both approaches.**
+
+---
+
 ## Repository Contents
 
 - **[CLAUDE_CODE_TERMUX_INSTALL.md](CLAUDE_CODE_TERMUX_INSTALL.md)** - Complete Claude Code installation guide for Termux
 - **[Termux-vs-ADB.md](Termux-vs-ADB.md)** - Why Termux can't access Autel data & confirmed ADB solution
 - **[APK_PATCHING.md](APK_PATCHING.md)** - Guide to patching APKs (fails on Autel due to Secneo protection)
+- **[WORKFLOW_COMPARISON.md](WORKFLOW_COMPARISON.md)** - 📋 **Complete workflow guide** - Native Claude in Termux vs Laptop with ADB (step-by-step for both approaches)
 - **[SHENZHEN_BUSINESS_MODEL.md](SHENZHEN_BUSINESS_MODEL.md)** - 🎯 **The Pattern: How Shenzhen ODMs lock users in** - Four-phase playbook (Entry → Lock-In → Monetize → Abandon), industry analysis, defense strategies
 - **[AUTEL_LOCKED_ECOSYSTEM.md](AUTEL_LOCKED_ECOSYSTEM.md)** - ⚠️ **Autel follows same anti-open-source model as Chinese radios** - Company origin, locked ecosystem evidence, GPL violations, subscription model, protection strategies
 - **[LOOP1_HOP.md](LOOP1_HOP.md)** - Loop1 "Hand Over Point" workflow for exporting Autel PDFs
-- **[WORKFLOW.md](WORKFLOW.md)** - Daily workflow for analyzing Autel diagnostics with Claude Code
+- **[WORKFLOW.md](WORKFLOW.md)** - Original daily workflow (see WORKFLOW_COMPARISON.md for updated guide)
 - **[README.md](README.md)** (this file) - Quick start, Autel data locations, and ADB security documentation
 - **[autel-conversation.md](autel-conversation.md)** - Detailed conversation log documenting the discovery process
 
