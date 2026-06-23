@@ -23,3 +23,7 @@ backup/
 # OS files
 .DS_Store
 Thumbs.db
+
+# APK files (too large for git)
+*.apk
+autel-decompiled/
