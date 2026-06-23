@@ -1,0 +1,25 @@
+# APK files (original and patched)
+*.apk
+*.apk.idsig
+
+# Decompiled APK directories
+*-decompiled/
+autel-decompiled/
+
+# Android build files
+*.ab
+*.keystore
+
+# Backup directories
+*-backup/
+backup/
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+~*
+
+# OS files
+.DS_Store
+Thumbs.db
