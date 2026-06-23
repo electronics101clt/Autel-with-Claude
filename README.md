@@ -13,6 +13,8 @@ This repository documents:
 ## Repository Contents
 
 - **[CLAUDE_CODE_TERMUX_INSTALL.md](CLAUDE_CODE_TERMUX_INSTALL.md)** - Complete Claude Code installation guide for Termux
+- **[LOOP1_HOP.md](LOOP1_HOP.md)** - Loop1 "Hand Over Point" workflow for exporting Autel PDFs
+- **[WORKFLOW.md](WORKFLOW.md)** - Daily workflow for analyzing Autel diagnostics with Claude Code
 - **[README.md](README.md)** (this file) - Quick start, Autel data locations, and ADB security documentation
 - **[autel-conversation.md](autel-conversation.md)** - Detailed conversation log documenting the discovery process
 
@@ -23,8 +25,9 @@ This repository documents:
 1. [Quick Start - Using Claude Code with Autel Data](#-quick-start---using-claude-code-with-autel-data)
 2. [Download Debuggable Termux APK](#download-debuggable-termux-apk)
 3. [Autel MaxiAP200 Data Storage Locations](#autel-maxiap200-data-storage-locations)
-4. [Methods to Access Termux via ADB](#methods-to-access-termux-via-adb)
-5. [Appendix: Advanced Security Topics](#appendix-advanced-security-topics)
+4. [Loop1 Hand Over Point (HOP)](#loop1-hand-over-point-hop)
+5. [Methods to Access Termux via ADB](#methods-to-access-termux-via-adb)
+6. [Appendix: Advanced Security Topics](#appendix-advanced-security-topics)
 
 ---
 
@@ -309,6 +312,22 @@ cd $(ls -t | head -1)
 ```
 
 **Note**: The recording files contain binary-encoded OBD-II diagnostic data. A parser will be needed to decode the vehicle data streams for use with Claude Code in Termux.
+
+---
+
+## Loop1 Hand Over Point (HOP)
+
+**Loop1** is a fake contact (555-000-0000) used to export Autel diagnostic PDFs without actually sending them.
+
+### How It Works
+
+1. Autel app generates report → Share to Loop1 contact
+2. MMS fails (invalid number) → PDF saved to `/sdcard/Download/`
+3. Files named: `_.~~tmp~~ (2) (N).pdf`
+
+**See**: [LOOP1_HOP.md](LOOP1_HOP.md) for complete workflow and Android 15 scoped storage workaround options.
+
+**Current Status**: PDFs accessible via ADB, but blocked from Termux due to scoped storage. Patching required.
 
 ---
 
