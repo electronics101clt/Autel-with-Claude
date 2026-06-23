@@ -42,6 +42,7 @@ adb pull /sdcard/Android/data/com.autel.maxiap200.autelap/files/MaxiApScan/ ~/au
 - **[CLAUDE_CODE_TERMUX_INSTALL.md](CLAUDE_CODE_TERMUX_INSTALL.md)** - Complete Claude Code installation guide for Termux
 - **[Termux-vs-ADB.md](Termux-vs-ADB.md)** - Why Termux can't access Autel data & confirmed ADB solution
 - **[APK_PATCHING.md](APK_PATCHING.md)** - Guide to patching APKs (fails on Autel due to Secneo protection)
+- **[SHENZHEN_BUSINESS_MODEL.md](SHENZHEN_BUSINESS_MODEL.md)** - 🎯 **The Pattern: How Shenzhen ODMs lock users in** - Four-phase playbook (Entry → Lock-In → Monetize → Abandon), industry analysis, defense strategies
 - **[AUTEL_LOCKED_ECOSYSTEM.md](AUTEL_LOCKED_ECOSYSTEM.md)** - ⚠️ **Autel follows same anti-open-source model as Chinese radios** - Company origin, locked ecosystem evidence, GPL violations, subscription model, protection strategies
 - **[LOOP1_HOP.md](LOOP1_HOP.md)** - Loop1 "Hand Over Point" workflow for exporting Autel PDFs
 - **[WORKFLOW.md](WORKFLOW.md)** - Daily workflow for analyzing Autel diagnostics with Claude Code
